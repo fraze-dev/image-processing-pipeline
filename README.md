@@ -234,6 +234,7 @@ This project demonstrates key AZ-204 exam objectives:
 
 ## 🔜 Future Enhancements
 
+- [ ] Create MIT License file
 - [ ] Add Application Insights for advanced monitoring
 - [ ] Implement retry policies and dead-letter queue handling
 - [ ] Add support for multiple image formats
