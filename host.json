@@ -1,0 +1,16 @@
+{
+  "version": "2.0",
+  "logging": {
+    "logLevel": {
+      "default": "Warning",
+      "Host.Results": "Information",
+      "Function": "Information",
+      "Azure.Core": "Warning"
+    }
+  },
+  "extensions": {
+    "queues": {
+      "messageEncoding": "none"
+    }
+  }
+}
