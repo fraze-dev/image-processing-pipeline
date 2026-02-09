@@ -21,7 +21,42 @@ This project implements an automated image processing pipeline that:
 
 ---
 
-## 🏗️ Architecture
+## 🚀 Live Deployment
+
+**Status:** ✅ Currently deployed and running on Azure
+
+**Note:** This is a backend processing pipeline with no public API endpoint. Images are processed automatically when uploaded to the storage container.
+
+### Azure Resources
+- **Function App:** `func-imgproc-aaron`
+- **Storage Account:** `stimgprocarron`
+- **Containers:** `uploads`, `processed`, `thumbnails`
+- **Queue:** `image-processing-queue`
+- **Table Storage:** `ImageMetadata`
+- **Resource Group:** `rg-imageprocessing`
+- **Region:** East US 2
+- **Monthly Cost:** $1-3
+
+### How It Works
+1. **Upload** an image to the `uploads` container
+2. **Blob Trigger** automatically detects the new image
+3. **Queue Message** is created for processing
+4. **Queue Trigger** processes the image:
+   - Resizes image to 800x600
+   - Creates thumbnail (200x200)
+   - Saves metadata to Table Storage
+5. **Processed images** appear in `processed` and `thumbnails` containers
+
+### Processing Features
+- Automatic image resizing
+- Thumbnail generation
+- Metadata extraction and storage
+- Event-driven architecture
+- Scalable queue-based processing
+
+---
+
+## 🗺️ Architecture
 ```
 User Upload → Blob Storage (uploads)
                     ↓
@@ -107,7 +142,7 @@ thumbnails) (metadata)   Logging/Alerts
    az login
    az group create --name rg-imageprocessing --location eastus2
    az storage account create \
-     --name stgimgproc$(Get-Random -Maximum 9999) \
+     --name stimgproc$(Get-Random -Maximum 9999) \
      --resource-group rg-imageprocessing \
      --location eastus2 \
      --sku Standard_LRS
@@ -159,21 +194,21 @@ thumbnails) (metadata)   Logging/Alerts
      --runtime dotnet-isolated \
      --runtime-version 8 \
      --functions-version 4 \
-     --name func-imageproc-$(Get-Random -Maximum 9999) \
-     --storage-account YOUR_STORAGE_ACCOUNT_NAME
+     --name func-imgproc-aaron \
+     --storage-account stimgprocarron
 ```
 
 2. **Configure app settings**
 ```bash
    az functionapp config appsettings set \
-     --name YOUR_FUNCTION_APP_NAME \
+     --name func-imgproc-aaron \
      --resource-group rg-imageprocessing \
      --settings "StorageConnectionString=$connectionString"
 ```
 
 3. **Deploy**
 ```bash
-   func azure functionapp publish YOUR_FUNCTION_APP_NAME
+   func azure functionapp publish func-imgproc-aaron
 ```
 
 ---
@@ -232,15 +267,16 @@ This project demonstrates key AZ-204 exam objectives:
 
 ---
 
-## 🔜 Future Enhancements
+## 🔮 Future Enhancements
 
-- [ ] Create MIT License file
 - [ ] Add Application Insights for advanced monitoring
 - [ ] Implement retry policies and dead-letter queue handling
 - [ ] Add support for multiple image formats
 - [ ] Implement batch processing
 - [ ] Add user authentication and authorization
 - [ ] Create a web UI for uploads and viewing
+- [ ] Add watermarking capability
+- [ ] Implement image format conversion
 
 ---
 
@@ -253,6 +289,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 👤 Author
 
 **Aaron**
+- Pursuing Microsoft Azure Developer Associate (AZ-204) certification
+- University of South Florida - Azure for Students subscription
 
 ---
 
